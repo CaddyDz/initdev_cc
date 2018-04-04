@@ -35,6 +35,8 @@ int main(int argc, char *argv[]) {
 		ifstream license_source("../licenses/gnu-gpl-v3.0.md", ios::binary);
 		ofstream license_destination(sPath + "/LICENSE", ios::binary);
 		license_destination << license_source.rdbuf();
+		// Create empty MakeFile
+		ofstream makefile(sPath + "/MakeFile", ios::binary);
 	#endif
 	if (nError != 0) {
 		cout << "Could not make project directory, make sure the name is correct" << endl;
