@@ -16,11 +16,11 @@ Initdev is installed by running one of the following commands in your terminal. 
 #### via curl
 
 ```shell
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/bsoumeya/master/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/bsoumeya/initdev_cc/master/install.sh)"
 ```
 
 #### via wget
 
 ```shell
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/bsoumeya/master/install.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/bsoumeya/initdev_cc/master/install.sh -O -)"
 ```
