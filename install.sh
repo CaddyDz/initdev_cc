@@ -25,7 +25,7 @@ main() {
 	set -e
 
 	if [ ! -n "$INITDEV" ]; then
-		# Check if initdev binary is within homepath
+		# Check if initdev directory is within homepath
 		INITDEV=~/.initdev
 	fi
 
@@ -73,7 +73,21 @@ main() {
 		printf "Error: git clone of init dev repo failed\n"
 		exit 1
 	}
+	g++ $INITDEV/src/main.cpp -o $INITDEV/bin/initdev
 
+	CHECK_ZSH_INSTALLED=$(grep /zsh$ /etc/shells | wc -l)
+	if [ ! $CHECK_ZSH_INSTALLED -ge 1 ]; then
+		echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.zshrc
+	else
+		echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.bashrc
+	fi
+	unset CHECK_ZSH_INSTALLED
+
+	# if [ -n "$ZSH_VERSION" ]; then
+	# 	echo "export PATH=$INITDEV/bin:$PATH" >> $homepath/.zshrc
+	# elif [ -n "$BASH_VERSION" ]; then
+	# 	echo "export PATH=$INITDEV/bin:$PATH" >> $homepath/.bashrc
+	# fi
 	printf "${GREEN}"
 echo	"	(         (   ( /(    )\ )   (    )            "
 echo	"	)\   (    )\  )\())  (()/(  ))\  /((           "

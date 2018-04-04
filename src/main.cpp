@@ -10,9 +10,11 @@ int main(int argc, char *argv[]) {
 
 	// Define strings
 	string current_exec_name = argv[0]; // Name of the current exec program
-	string first_arg = argv[1];
+	string first_arg;
+	if(argv[1] != NULL) {
+		string first_arg = argv[1];
+	}
 	string home_dir = "~/";
-
 	if(argv[1] == NULL) {
 		cout << "Expected arguments, please check the help : " + current_exec_name + " –help" << '\n';
 		return 1;
