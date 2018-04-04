@@ -25,11 +25,16 @@ int main(int argc, char *argv[]) {
 		nError = _mkdir(sPath.c_str()); // can be used on Windows
 	#else 
 		nError = mkdir(sPath.c_str(), nMode); // can be used on non-Windows
-		// Copy empty main file to the project directory
 		// C++ by default for now
-		std::ifstream  src("../sources/main.cpp", ios::binary);
-		std::ofstream  dst(sPath + "/main.cpp", ios::binary);
-		dst << src.rdbuf();
+		// Copy empty main file to the project directory
+		ifstream  main_code_source("../sources/main.cpp", ios::binary);
+		ofstream  main_code_destination(sPath + "/main.cpp", ios::binary);
+		main_code_destination << main_code_source.rdbuf();
+		// Copy license file to the project directory
+		// GPL3 by default for now
+		ifstream license_source("../licenses/gnu-gpl-v3.0.md", ios::binary);
+		ofstream license_destination(sPath + "/LICENSE", ios::binary);
+		license_destination << license_source.rdbuf();
 	#endif
 	if (nError != 0) {
 		cout << "Could not make project directory, make sure the name is correct" << endl;
