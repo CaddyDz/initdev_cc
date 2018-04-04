@@ -19,17 +19,22 @@ int main(int argc, char *argv[]) {
 	}
 	
 	std::string sPath = argv[1];
-	cout << sPath << endl;
 	mode_t nMode = 0733; // UNIX style permissions
 	int nError = 0;
 	#if defined(_WIN32)
 		nError = _mkdir(sPath.c_str()); // can be used on Windows
 	#else 
 		nError = mkdir(sPath.c_str(), nMode); // can be used on non-Windows
+		// Copy empty main file to the project directory
+		// C++ by default for now
+		std::ifstream  src("../sources/main.cpp", ios::binary);
+		std::ofstream  dst(sPath + "/main.cpp", ios::binary);
+		dst << src.rdbuf();
 	#endif
 	if (nError != 0) {
 		cout << "Could not make project directory, make sure the name is correct" << endl;
 	}
+	
 	// Suppress warnings
 	(void)argc;
 	(void)argv;

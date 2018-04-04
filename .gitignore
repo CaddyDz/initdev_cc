@@ -1,3 +1,7 @@
+# Custom ignores
+.vscode
+!src/main.cpp
+src/*
 # Prerequisites
 *.d
 
