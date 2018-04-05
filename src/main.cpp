@@ -103,6 +103,10 @@ int main(int argc, char* argv[]) {
 				ifstream main_code_source("../sources/beamer.tex", ios::binary);
 				ofstream main_code_destination(sPath + "/main.tex", ios::binary);
 				main_code_destination << main_code_source.rdbuf();
+			} else if (string(argv[2]) == "-git") {
+				// Prompt the user
+				cout << "You must set project type, please check the help : initdev –help" << endl;
+				return 1;
 			} else {
 				cout << "Uknown arguments, please check the help : initdev –help"
 				<< endl;
