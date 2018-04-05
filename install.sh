@@ -84,6 +84,7 @@ main() {
 	# unset CHECK_ZSH_INSTALLED
 
 	if [ -n "$ZSH_VERSION" ]; then
+		# export path only if not already there
 		echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.zshrc
 	elif [ -n "$BASH_VERSION" ]; then
 		echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.bashrc
