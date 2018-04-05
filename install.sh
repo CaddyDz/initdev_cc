@@ -73,8 +73,11 @@ main() {
 		printf "Error: git clone of init dev repo failed\n"
 		exit 1
 	}
-	g++ $INITDEV/src/main.cpp -o $INITDEV/bin/initdev
-
+	if [ ! -f "$INITDEV/bin/initdev" ]; then
+		g++ $INITDEV/src/main.cpp -o $INITDEV/bin/initdev
+	else
+		g++ $INITDEV/src/main.cpp -o $INITDEV/bin/initdev1
+	fi
 	# CHECK_ZSH_INSTALLED=$(grep /zsh$ /etc/shells | wc -l)
 	# if [ ! $CHECK_ZSH_INSTALLED -ge 1 ]; then
 	# 	echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.zshrc
