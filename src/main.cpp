@@ -94,11 +94,29 @@ int main(int argc, char* argv[]) {
 				return 1;
 			}
 			
-			// Copy license file to the project directory
-			// GPL3 by default for now
-			ifstream license_source("../licenses/gnu-gpl-v3.0.md", ios::binary);
-			ofstream license_destination(sPath + "/LICENSE", ios::binary);
-			license_destination << license_source.rdbuf();
+			/*
+			* Licensing
+			*/
+		if ((argv[3] == NULL) || (string(argv[3]) == "")) {
+				fstream fs;
+				// Create an empty license file in the root directory
+				fs.open(sPath + "/LICENSE", ios::out);
+				fs.close();
+			} else if (string(string(argv[3])) == "-GPL") {
+				// Copy the GNU Gneral Public License v3
+				ifstream license_source("../licenses/GPL", ios::binary);
+				ofstream license_destination(sPath + "/LICENSE", ios::binary);
+				license_destination << license_source.rdbuf();
+			} else if (string(argv[3]) == "-MIT") {
+				// Copy the Massachusetts Institute of Technology License
+				ifstream license_source("../licenses/MIT", ios::binary);
+				ofstream license_destination(sPath + "/LICENSE", ios::binary);
+				license_destination << license_source.rdbuf();
+			} else {
+				cout << "Uknown arguments, please check the help : initdev –help"
+				<< endl;
+				return 1;
+			}
 			// Create empty MakeFile
 			ofstream makefile(sPath + "/MakeFile", ios::binary);
 		#endif
