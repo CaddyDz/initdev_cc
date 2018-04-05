@@ -3,6 +3,7 @@
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -63,30 +64,44 @@ int main(int argc, char* argv[]) {
 				// Copy empty main file to the project directory
 				fs.open(sPath + "/main", ios::out);
 				fs.close();
+				fs.open(sPath + "/.gitignore", ios::out);
+				fs.close();
 			} else if ((string(string(argv[2])) == "-C++") || (string(string(argv[2])) == "-CPP")) {
 				// Create a C++ project
-				ifstream  main_code_source("../sources/main.cpp", ios::binary);
-				ofstream  main_code_destination(sPath + "/main.cpp", ios::binary);
+				ifstream main_code_source("../sources/main.cpp", ios::binary);
+				ofstream main_code_destination(sPath + "/main.cpp", ios::binary);
 				main_code_destination << main_code_source.rdbuf();
+				ifstream git_ignore_source("../gitignores/cpp", ios::binary);
+				ofstream git_ignore_destination(sPath + "/.gitignore", ios::binary);
+				git_ignore_destination << git_ignore_source.rdbuf();
 			} else if (string(argv[2]) == "-C") {
 				// Create a C project
-				ifstream  main_code_source("../sources/main.c", ios::binary);
-				ofstream  main_code_destination(sPath + "/main.c", ios::binary);
+				ifstream main_code_source("../sources/main.c", ios::binary);
+				ofstream main_code_destination(sPath + "/main.c", ios::binary);
 				main_code_destination << main_code_source.rdbuf();
+				ifstream git_ignore_source("../gitignores/c", ios::binary);
+				ofstream git_ignore_destination(sPath + "/.gitignore", ios::binary);
+				git_ignore_destination << git_ignore_source.rdbuf();
 			} else if (string(argv[2]) == "-Py") {
 				// Create a Python project
-				ifstream  main_code_source("../sources/main.py", ios::binary);
-				ofstream  main_code_destination(sPath + "/main.py", ios::binary);
+				ifstream main_code_source("../sources/main.py", ios::binary);
+				ofstream main_code_destination(sPath + "/main.py", ios::binary);
 				main_code_destination << main_code_source.rdbuf();
+				ifstream git_ignore_source("../gitignores/python", ios::binary);
+				ofstream git_ignore_destination(sPath + "/.gitignore", ios::binary);
+				git_ignore_destination << git_ignore_source.rdbuf();
 			} else if (string(argv[2]) == "-Latex") {
 				// Create a Latex project
-				ifstream  main_code_source("../sources/main.tex", ios::binary);
-				ofstream  main_code_destination(sPath + "/main.tex", ios::binary);
+				ifstream main_code_source("../sources/main.tex", ios::binary);
+				ofstream main_code_destination(sPath + "/main.tex", ios::binary);
 				main_code_destination << main_code_source.rdbuf();
+				ifstream git_ignore_source("../gitignores/tex", ios::binary);
+				ofstream git_ignore_destination(sPath + "/.gitignore", ios::binary);
+				git_ignore_destination << git_ignore_source.rdbuf();
 			} else if (string(argv[2]) == "-BEAMER") {
 				// Create a Beamer project
-				ifstream  main_code_source("../sources/beamer.tex", ios::binary);
-				ofstream  main_code_destination(sPath + "/main.tex", ios::binary);
+				ifstream main_code_source("../sources/beamer.tex", ios::binary);
+				ofstream main_code_destination(sPath + "/main.tex", ios::binary);
 				main_code_destination << main_code_source.rdbuf();
 			} else {
 				cout << "Uknown arguments, please check the help : initdev –help"
@@ -94,9 +109,9 @@ int main(int argc, char* argv[]) {
 				return 1;
 			}
 			
-			/*
-			* Licensing
-			*/
+		/*
+		* Licensing
+		*/
 		if ((argv[3] == NULL) || (string(argv[3]) == "")) {
 				fstream fs;
 				// Create an empty license file in the root directory
@@ -117,8 +132,22 @@ int main(int argc, char* argv[]) {
 				<< endl;
 				return 1;
 			}
-			// Create empty MakeFile
-			ofstream makefile(sPath + "/MakeFile", ios::binary);
+		/*
+		* Initialize git repo
+		*/
+		if ((argv[4] == NULL) || (string(argv[4]) == "")) {
+		// Do nothing
+		} else if (string(string(argv[4])) == "-git") {
+			// Initialize git repo
+			chdir(string(sPath).c_str());
+			system("git init");
+		} else {
+			cout << "Uknown arguments, please check the help : initdev –help"
+			<< endl;
+			return 1;
+		}
+		// Create empty MakeFile
+		ofstream makefile(sPath + "/MakeFile", ios::binary);
 		#endif
 		if (nError != 0) {
 			cout << "Could not make project directory, make sure the name is correct" << endl;
