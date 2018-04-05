@@ -75,19 +75,19 @@ main() {
 	}
 	g++ $INITDEV/src/main.cpp -o $INITDEV/bin/initdev
 
-	CHECK_ZSH_INSTALLED=$(grep /zsh$ /etc/shells | wc -l)
-	if [ ! $CHECK_ZSH_INSTALLED -ge 1 ]; then
+	# CHECK_ZSH_INSTALLED=$(grep /zsh$ /etc/shells | wc -l)
+	# if [ ! $CHECK_ZSH_INSTALLED -ge 1 ]; then
+	# 	echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.zshrc
+	# else
+	# 	echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.bashrc
+	# fi
+	# unset CHECK_ZSH_INSTALLED
+
+	if [ -n "$ZSH_VERSION" ]; then
 		echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.zshrc
-	else
+	elif [ -n "$BASH_VERSION" ]; then
 		echo "export PATH='$INITDEV/bin:$PATH'" >> ~/.bashrc
 	fi
-	unset CHECK_ZSH_INSTALLED
-
-	# if [ -n "$ZSH_VERSION" ]; then
-	# 	echo "export PATH=$INITDEV/bin:$PATH" >> $homepath/.zshrc
-	# elif [ -n "$BASH_VERSION" ]; then
-	# 	echo "export PATH=$INITDEV/bin:$PATH" >> $homepath/.bashrc
-	# fi
 	printf "${GREEN}"
 echo	"	(         (   ( /(    )\ )   (    )            "
 echo	"	)\   (    )\  )\())  (()/(  ))\  /((           "
