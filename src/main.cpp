@@ -34,11 +34,11 @@ int main(int argc, char* argv[]) {
 		<< "name_of_project: (Any valid alpha_dash string literal is accepted)" << " the name of the directory and project to be created.\n"
 		<< "-help: Shows this help menu and instructions and then exit.\n"
 		<< "-type can be: \n"
-		<< "--Py: Creates a project with preconfigurations tailored for Python projects.\n"
-		<< "--C++: Creates a project with preconfigurations tailored for C++ projects. \n"
-		<< "--C: Creates a project with preconfigurations tailored for C projects.\n"
-		<< "--Latex: Creates a project with preconfigurations tailored for Latex documents projects.\n"
-		<< "--BEAMER: Creates a project with preconfigurations tailored for Beamer projects.\n"
+		<< "-C++ or -CPP: Creates a project with preconfigurations tailored for C++ projects. \n"
+		<< "-C: Creates a project with preconfigurations tailored for C projects.\n"
+		<< "-Py: Creates a project with preconfigurations tailored for Python projects.\n"
+		<< "-Latex: Creates a project with preconfigurations tailored for Latex documents projects.\n"
+		<< "-BEAMER: Creates a project with preconfigurations tailored for Beamer projects.\n"
 		"Author: Benguergoura Soumeya (bsoumeya) benguergoura.soumeya2@gmail.com" << endl;
 		return 0;
 } else { // A project name is given
@@ -57,11 +57,43 @@ int main(int argc, char* argv[]) {
 			nError = _mkdir(sPath.c_str()); // can be used on Windows
 		#else 
 			nError = mkdir(sPath.c_str(), nMode); // can be used on non-Windows
-			// C++ by default for now
-			// Copy empty main file to the project directory
-			ifstream  main_code_source("../sources/main.cpp", ios::binary);
-			ofstream  main_code_destination(sPath + "/main.cpp", ios::binary);
-			main_code_destination << main_code_source.rdbuf();
+			if ((argv[2] == NULL) || (string(argv[2]) == "")) {
+				// Create an empty project
+				fstream fs;
+				// Copy empty main file to the project directory
+				fs.open(sPath + "/main", ios::out);
+				fs.close();
+			} else if ((string(string(argv[2])) == "-C++") || (string(string(argv[2])) == "-CPP")) {
+				// Create a C++ project
+				ifstream  main_code_source("../sources/main.cpp", ios::binary);
+				ofstream  main_code_destination(sPath + "/main.cpp", ios::binary);
+				main_code_destination << main_code_source.rdbuf();
+			} else if (string(argv[2]) == "-C") {
+				// Create a C project
+				ifstream  main_code_source("../sources/main.c", ios::binary);
+				ofstream  main_code_destination(sPath + "/main.c", ios::binary);
+				main_code_destination << main_code_source.rdbuf();
+			} else if (string(argv[2]) == "-Py") {
+				// Create a Python project
+				ifstream  main_code_source("../sources/main.py", ios::binary);
+				ofstream  main_code_destination(sPath + "/main.py", ios::binary);
+				main_code_destination << main_code_source.rdbuf();
+			} else if (string(argv[2]) == "-Latex") {
+				// Create a Latex project
+				ifstream  main_code_source("../sources/main.tex", ios::binary);
+				ofstream  main_code_destination(sPath + "/main.tex", ios::binary);
+				main_code_destination << main_code_source.rdbuf();
+			} else if (string(argv[2]) == "-BEAMER") {
+				// Create a Beamer project
+				ifstream  main_code_source("../sources/beamer.tex", ios::binary);
+				ofstream  main_code_destination(sPath + "/main.tex", ios::binary);
+				main_code_destination << main_code_source.rdbuf();
+			} else {
+				cout << "Uknown arguments, please check the help : initdev –help"
+				<< endl;
+				return 1;
+			}
+			
 			// Copy license file to the project directory
 			// GPL3 by default for now
 			ifstream license_source("../licenses/gnu-gpl-v3.0.md", ios::binary);
