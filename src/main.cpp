@@ -6,7 +6,9 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
+struct stat sb;
+
+int main(int argc, char* argv[]) {
 
 	// Define strings
 	string current_exec_name = argv[0]; // Name of the current exec program
@@ -15,25 +17,40 @@ int main(int argc, char *argv[]) {
 		string first_arg = argv[1];
 	}
 	string home_dir = "~/";
+	// If project name is not given than throw an exception
 	if(argv[1] == NULL) {
 		cout << "Expected arguments, please check the help : " + current_exec_name + " –help" << '\n';
 		return 1;
-	} else if (first_arg == "-help") {
+	} else if (string(argv[1]) == "-help") { // If the user invoked -help
 		cout << "Name: " + current_exec_name << endl;
-		cout << "Description: Create a new preconfigured project initialized with templates to get started faster." << "\n";
-		cout << "Syntax: " + current_exec_name + " name_of_project" << "\n";
-		cout << "args: " << "\n";
-		cout << "name_of_project: (Any valid alpha_dash string literal is accepted)" << " the name of the directory and project to be created." << "\n";
-		cout << "-help: " << "Shows this help menu and instructions and then exit." << "\n";
-		cout << "--Py: " << "Creates a project with preconfigurations tailored for Python projects." << "\n";
-		cout << "--C++: " << "Creates a project with preconfigurations tailored for C++ projects. " << "\n";
-		cout << "--C: " << "Creates a project with preconfigurations tailored for C projects." << "\n";
-		cout << "--Latex: " << "Creates a project with preconfigurations tailored for Latex documents projects." << "\n";
-		cout << "--BEAMER: " << "Creates a project with preconfigurations tailored for Beamer projects." << "\n";
-		cout << "Author: " << "Benguergoura Soumeya (bsoumeya) benguergoura.soumeya2@gmail.com" << endl;
+		cout << "Description: Create a new preconfigured project initialized with templates to get started faster.\n"
+		<< "Syntax: "
+		<< current_exec_name
+		<< " name_of_project"
+		<< " -license"
+		<< " -type"
+		<< " -git\n"
+		<< "Arguments: \n"
+		<< "name_of_project: (Any valid alpha_dash string literal is accepted)" << " the name of the directory and project to be created.\n"
+		<< "-help: Shows this help menu and instructions and then exit.\n"
+		<< "-type can be: \n"
+		<< "--Py: Creates a project with preconfigurations tailored for Python projects.\n"
+		<< "--C++: Creates a project with preconfigurations tailored for C++ projects. \n"
+		<< "--C: Creates a project with preconfigurations tailored for C projects.\n"
+		<< "--Latex: Creates a project with preconfigurations tailored for Latex documents projects.\n"
+		<< "--BEAMER: Creates a project with preconfigurations tailored for Beamer projects.\n"
+		"Author: Benguergoura Soumeya (bsoumeya) benguergoura.soumeya2@gmail.com" << endl;
 		return 0;
-	} else if (first_arg != "-help"){
+} else { // A project name is given
 		string sPath = argv[1];
+		if (!stat(argv[1], &sb)) {
+			cout << "Could not make project directory, already exists\n"
+			<< "Remove that project first rm -rf "
+			<< argv[1]
+			<< " and retry"
+			<< endl;
+			return 1;
+		}
 		mode_t nMode = 0733; // UNIX style permissions
 		int nError = 0;
 		#if defined(_WIN32)
@@ -55,6 +72,7 @@ int main(int argc, char *argv[]) {
 		#endif
 		if (nError != 0) {
 			cout << "Could not make project directory, make sure the name is correct" << endl;
+			return 1;
 		}
 	}
 	// Suppress warnings
